@@ -1,0 +1,15 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  MODULE_VERSION: Releases/v4.2.0
+
+include: #                                                  /
+  - project: "DevOps/Module/unreal"
+    ref: Releases/v4.2.0
+    file:
+      - "generator/generator.gitlab-ci.yml"
+  - local: "/.variables.yml"
+
+stages:
+  - fill ddc
+  - generate jobs
+  - trigger jobs

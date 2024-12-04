@@ -1,0 +1,1 @@
+../../../SKYMOBA/SKYMOBA.uproject /Game/SKYMOBA/Map/Sandbox/L_3C_Sandbox_WP -logPSO

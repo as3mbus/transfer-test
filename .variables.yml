@@ -1,0 +1,61 @@
+variables:
+  # ====== Submodule configuration ======
+  GIT_SUBMODULE_STRATEGY: recursive
+
+  # ====== Unreal Project Configuration ======
+  UPROJECT_NAME: SKYMOBA # .uproject name
+  UNREAL_VERSION: "5.3.2-build" # Unreal Engine Version / Build you plan to use
+  CORE_MODULE: SKYM # Prefix of Editor.Target
+
+  # ====== Build Script Configuration Type, & PLatforms ======
+  CLIENT_TYPE_LIST: "SKYM" # refer to build target names for client / game build
+  CLIENT_PLATFORM_LIST: "Android" # refer to Job name AutoBuild Package Build Postfix
+
+  # == SERVER CONFIGURATION ==
+
+  SERVER_TYPE_LIST: "SKYMServer SKYMLobbyServer" # refer to build target names for server build
+
+  # ====== docker image versioning ======
+  MAJOR_VER: "0"
+  MINOR_VER: "0"
+
+  # ====== cluster ======
+  # CLUSTER_PROVIDER: KUBERNETES # available option : KUBERNETES / GOOGLE
+
+  # gke cluster
+  GCP_PROJECT_ID: agate-fsku
+  # KUBERNETES_CLUSTER_LIST: "fsku-cluster"
+  KUBERNETES_CLUSTER_ZONE_LIST: "asia-southeast1-a"
+
+  # ====== Agones Fleet & Deployment Configuration ======
+  GAMESERVER_NAMESPACE: sekuya-open-match-dev
+
+  BUFFER_SIZE: 2
+  MIN_REPLICAS: 0
+  MAX_REPLICAS: 20
+
+  # NODE_SELECTOR: |
+  #   "cloud.agate.id/preemptible:'true'"
+  #   "cloud.agate.id/environment:'dev'"
+
+  # NODE_SELECTOR_RELEASE: |
+  #   "cloud.agate.id/preemptible:'true'"
+  #   "cloud.agate.id/environment:'prod'"
+
+  #SAGA
+  RESOURCES_REQUESTS_CPU_AGONES_SKYMSERVER_API: 100
+  RESOURCES_REQUESTS_MEMORY_AGONES_SKYMSERVER_API: 200
+  RESOURCES_LIMITS_CPU_AGONES_SKYMSERVER_API: 400
+  RESOURCES_LIMITS_MEMORY_AGONES_SKYMSERVER_API: 1200
+
+  #LOBBY
+  RESOURCES_REQUESTS_CPU_AGONES_SKYMLOBBYSERVER_API: 75
+  RESOURCES_REQUESTS_MEMORY_AGONES_SKYMLOBBYSERVER_API: 150
+  RESOURCES_LIMITS_CPU_AGONES_SKYMLOBBYSERVER_API: 300
+  RESOURCES_LIMITS_MEMORY_AGONES_SKYMLOBBYSERVER_API: 900
+
+  RESOURCES_REQUESTS_CPU_RELEASE: 1250
+  RESOURCES_REQUESTS_MEMORY_RELEASE: 1250
+  RESOURCES_LIMITS_CPU_RELEASE: 1500
+  RESOURCES_LIMITS_MEMORY_RELEASE: 1500
+

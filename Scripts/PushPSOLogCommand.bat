@@ -1,0 +1,1 @@
+call adb push .\PSOLogCommandLine.txt "/sdcard/Android/data/com.skymsso.test/files/UnrealGame/SKYMOBA/UECommandLine.txt"

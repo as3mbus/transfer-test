@@ -1,0 +1,1 @@
+../../../SKYMOBA/SKYMOBA.uproject -tracehost=127.0.0.1 -NetTrace=1 -trace=net,default,memory,metadata,assetmetadata,Bookmark,Frame,CPU,GPU,LoadTime,File
