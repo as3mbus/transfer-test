@@ -49,7 +49,7 @@ pull-external:
         Write-Host "Remote $INTERNAL_REMOTE already exists."
       } else {
         Write-Host "Adding remote $EXTERNAL_REMOTE..."
-        git remote add $INTERNAL_REMOTE https://$INTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+        git remote add $INTERNAL_REMOTE https://$INTERNAL_ACCESS_TOKEN@$INTERNAL_REMOTE_PATH
       }
 
     # pull from external remote
