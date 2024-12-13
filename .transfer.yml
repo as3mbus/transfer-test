@@ -20,7 +20,7 @@ push-external:
         Write-Host "Remote $EXTERNAL_REMOTE already exists."
       } else {
         Write-Host "Adding remote $EXTERNAL_REMOTE..."
-        git remote add $EXTERNAL_REMOTE https://$ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+        git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
       }
 
     # Push all tags to the existing remote
@@ -45,15 +45,16 @@ pull-external:
 
     # Optional: Verify the correct remote is defined
     - |
-      if (git remote get-url $EXTERNAL_REMOTE) {
-        Write-Host "Remote $EXTERNAL_REMOTE already exists."
+      if (git remote get-url $INTERNAL_REMOTE) {
+        Write-Host "Remote $INTERNAL_REMOTE already exists."
       } else {
         Write-Host "Adding remote $EXTERNAL_REMOTE..."
-        git remote add $EXTERNAL_REMOTE https://$ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+        git remote add $INTERNAL_REMOTE https://$INTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
       }
 
     # pull from external remote
     - Write-Host "Pulling from the remote repository..."
     - git pull $EXTERNAL_REMOTE develop
     - git lfs fetch --all $EXTERNAL_REMOTE
-    - git push origin HEAD:refs/heads/develop
+    - git push INTERNAL_REMOTE HEAD:refs/heads/develop
+    - git lfs push --all $INTERNAL_REMOTE
