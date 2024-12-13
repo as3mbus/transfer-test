@@ -25,7 +25,7 @@ push-external:
 
     # Push all tags to the existing remote
     - Write-Host "Pushing to the remote repository..."
-    - git push $EXTERNAL_REMOTE $CI_COMMIT_BRANCH
+    - git push $EXTERNAL_REMOTE $CI_COMMIT_BRANCH $CI_COMMIT_BRANCH
     - git lfs push $EXTERNAL_REMOTE --all
 
 pull-external:
