@@ -32,7 +32,7 @@ pull-external:
   stage: transfer-external
   when: manual
   only: 
-    - develop
+    - develop-art
   tags: 
     - powershell
     - unity
@@ -54,6 +54,6 @@ pull-external:
 
     # pull from external remote
     - Write-Host "Pulling from the remote repository..."
-    - git pull $EXTERNAL_REMOTE $CI_COMMIT_BRANCH
+    - git pull $EXTERNAL_REMOTE develop
     - git lfs fetch $EXTERNAL_REMOTE --all
-    - git push origin $CI_COMMIT_BRANCH
+    - git push origin develop
