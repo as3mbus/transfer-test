@@ -1,0 +1,49 @@
+push-external:
+  stage: transfer-external
+  when: manual
+  only: develop-art
+  allow_failure: true
+  script:
+    - git lfs fetch origin --all
+    # Check existing remotes
+    - echo "Existing remotes:"
+    - git remote -v
+
+    # Optional: Verify the correct remote is defined
+    - |
+      if (git remote get-url $EXTERNAL_REMOTE) {
+        Write-Host "Remote $EXTERNAL_REMOTE already exists."
+      } else {
+        Write-Host "Adding remote $EXTERNAL_REMOTE..."
+        git remote add new-remote https://$ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+      }
+
+    # Push all tags to the existing remote
+    - Write-Host "Pushing to the remote repository..."
+    - git push new-remote $CI_COMMIT_BRANCH
+    - git lfs push $EXTERNAL_REMOTE --all
+
+pull-external:
+  stage: transfer-external
+  when: manual
+  only: develop
+  allow_failure: true
+  script:
+    # Check existing remotes
+    - echo "Existing remotes:"
+    - git remote -v
+
+    # Optional: Verify the correct remote is defined
+    - |
+      if (git remote get-url $EXTERNAL_REMOTE) {
+        Write-Host "Remote $EXTERNAL_REMOTE already exists."
+      } else {
+        Write-Host "Adding remote $EXTERNAL_REMOTE..."
+        git remote add new-remote https://$ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+      }
+
+    # pull from external remote
+    - Write-Host "Pulling from the remote repository..."
+    - git pull $EXTERNAL_REMOTE $CI_COMMIT_BRANCH
+    - git lfs fetch $EXTERNAL_REMOTE --all
+    - git push origin $CI_COMMIT_BRANCH

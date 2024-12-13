@@ -8,8 +8,10 @@ include: #                                                  /
     file:
       - "generator/generator.gitlab-ci.yml"
   - local: "/.variables.yml"
+  - local: "/.transfer.yml"
 
 stages:
+  - transfer-external
   - fill ddc
   - generate jobs
   - trigger jobs
