@@ -55,5 +55,5 @@ pull-external:
     # pull from external remote
     - Write-Host "Pulling from the remote repository..."
     - git pull $EXTERNAL_REMOTE develop
-    - git lfs fetch $EXTERNAL_REMOTE --all
+    - git lfs fetch --all $EXTERNAL_REMOTE
     - git push origin HEAD:refs/heads/develop
