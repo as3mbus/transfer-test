@@ -8,7 +8,7 @@ push-external:
   only: 
     - develop-art
   allow_failure: true
-  before-script:
+  before_script:
     - echo "Pushing change of CI_COMMIT_BRANCH to EXTERNAL_REMOTE."
     - echo "Required Variables :"
     - echo "- EXTERNAL_REMOTE = The name of the external remote repository."
@@ -47,7 +47,7 @@ pull-external:
     - unity
     - windows-runner-01
   allow_failure: true
-  before-script:
+  before_script:
     - echo "Pulling EXTERNAL_UPSTREAM_BRANCH changes from EXTERNAL_REMOTE and pushing it to INTERNAL_REMOTE."
     - echo "Required Variables :"
     - echo " - EXTERNAL_UPSTREAM_BRANCH = The branch name in the external remote repository to pull changes from."
