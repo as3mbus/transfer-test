@@ -9,11 +9,11 @@ push-external:
     - develop-art
   allow_failure: true
   before_script:
-    - echo "Pushing change of CI_COMMIT_BRANCH to EXTERNAL_REMOTE."
-    - echo "Required Variables :"
-    - echo "- EXTERNAL_REMOTE = The name of the external remote repository."
-    - echo "- EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository."
-    - echo "- EXTERNAL_REMOTE_PATH = The URL path of the external remote repository."
+    - echo "Pushing change to \$CI_COMMIT_BRANCH of EXTERNAL_REMOTE.`n`n\
+      Required Variables with Descriptions:`n\
+      EXTERNAL_REMOTE = The name of the external remote repository.`n\
+      EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository.`n\
+      EXTERNAL_REMOTE_PATH = The URL path of the external remote repository."
   script:
     - echo "Pushing change of $CI_COMMIT_BRANCH to $EXTERNAL_REMOTE."
     
@@ -48,15 +48,15 @@ pull-external:
     - windows-runner-01
   allow_failure: true
   before_script:
-    - echo "Pulling EXTERNAL_UPSTREAM_BRANCH changes from EXTERNAL_REMOTE and pushing it to INTERNAL_REMOTE."
-    - echo "Required Variables :"
-    - echo " - EXTERNAL_UPSTREAM_BRANCH = The branch name in the external remote repository to pull changes from."
-    - echo " - EXTERNAL_REMOTE = The name of the external remote repository."
-    - echo " - EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository."
-    - echo " - EXTERNAL_REMOTE_PATH = The URL path of the external remote repository."
-    - echo " - INTERNAL_REMOTE = The name of the internal remote repository."
-    - echo " - INTERNAL_ACCESS_TOKEN = Access token for authentication with the internal remote repository."
-    - echo " - INTERNAL_REMOTE_PATH = The URL path of the internal remote repository."
+    - echo "Pulling EXTERNAL_UPSTREAM_BRANCH changes from EXTERNAL_REMOTE and pushing it to INTERNAL_REMOTE.`n`n\
+      Required Variables with Descriptions:`n\
+      EXTERNAL_UPSTREAM_BRANCH = The branch name in the external remote repository to pull changes from.`n\
+      EXTERNAL_REMOTE = The name of the external remote repository.`n\
+      EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository.`n\
+      EXTERNAL_REMOTE_PATH = The URL path of the external remote repository.`n\
+      INTERNAL_REMOTE = The name of the internal remote repository.`n\
+      INTERNAL_ACCESS_TOKEN = Access token for authentication with the internal remote repository.`n\
+      INTERNAL_REMOTE_PATH = The URL path of the internal remote repository."
   script:
     - echo "Pulling $EXTERNAL_UPSTREAM_BRANCH changes from $EXTERNAL_REMOTE and pushing it to $INTERNAL_REMOTE."
     # Check existing remotes
@@ -88,7 +88,7 @@ pull-external:
     - git lfs fetch --all $EXTERNAL_REMOTE
     
     # Pushing to $INTERNAL_REMOTE repository...
-    - echo "Pushing to $INTERNAL_REMOTE repository..."
+    - echo "Pushing $EXTERNAL_UPSTREAM_BRANCH to $INTERNAL_REMOTE repository..."
 
     - git push $INTERNAL_REMOTE $EXTERNAL_REMOTE/${$EXTERNAL_UPSTREAM_BRANCH}:refs/heads/$EXTERNAL_UPSTREAM_BRANCH
     - git lfs push $INTERNAL_REMOTE --all
