@@ -8,7 +8,15 @@ push-external:
   only: 
     - develop-art
   allow_failure: true
+  before-script:
+    - echo "Pushing change of CI_COMMIT_BRANCH to EXTERNAL_REMOTE."
+    - echo "Required Variables :"
+    - echo "- EXTERNAL_REMOTE = The name of the external remote repository."
+    - echo "- EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository."
+    - echo "- EXTERNAL_REMOTE_PATH = The URL path of the external remote repository."
   script:
+    - echo "Pushing change of $CI_COMMIT_BRANCH to $EXTERNAL_REMOTE."
+    
     - git lfs fetch origin --all
     # Check existing remotes
     - echo "Existing remotes:"
@@ -17,11 +25,12 @@ push-external:
     # Optional: Verify the correct remote is defined
     - |
       if (git remote get-url $EXTERNAL_REMOTE) {
-        Write-Host "Remote $EXTERNAL_REMOTE already exists."
-      } else {
-        Write-Host "Adding remote $EXTERNAL_REMOTE..."
-        git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
+        Write-Host "Remote $EXTERNAL_REMOTE already exists. Removing ..."
+        git remote remove $EXTERNAL_REMOTE
       }
+
+    - Write-Host "Adding remote $EXTERNAL_REMOTE..."
+    - git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH
 
     # Push all tags to the existing remote
     - Write-Host "Pushing to the remote repository..."
@@ -38,29 +47,48 @@ pull-external:
     - unity
     - windows-runner-01
   allow_failure: true
+  before-script:
+    - echo "Pulling EXTERNAL_UPSTREAM_BRANCH changes from EXTERNAL_REMOTE and pushing it to INTERNAL_REMOTE."
+    - echo "Required Variables :"
+    - echo " - EXTERNAL_UPSTREAM_BRANCH = The branch name in the external remote repository to pull changes from."
+    - echo " - EXTERNAL_REMOTE = The name of the external remote repository."
+    - echo " - EXTERNAL_ACCESS_TOKEN = Access token for authentication with the external remote repository."
+    - echo " - EXTERNAL_REMOTE_PATH = The URL path of the external remote repository."
+    - echo " - INTERNAL_REMOTE = The name of the internal remote repository."
+    - echo " - INTERNAL_ACCESS_TOKEN = Access token for authentication with the internal remote repository."
+    - echo " - INTERNAL_REMOTE_PATH = The URL path of the internal remote repository."
   script:
+    - echo "Pulling $EXTERNAL_UPSTREAM_BRANCH changes from $EXTERNAL_REMOTE and pushing it to $INTERNAL_REMOTE."
     # Check existing remotes
     - echo "Existing remotes:"
     - git remote -v
 
     # Optional: Verify the correct remote is defined
+    - echo "Setting Remote"
     - |
       if (git remote get-url $INTERNAL_REMOTE) {
-        Write-Host "Remote $INTERNAL_REMOTE already exists."
-      } else {
-        Write-Host "Adding remote $EXTERNAL_REMOTE..."
-        git remote add $INTERNAL_REMOTE http://$INTERNAL_ACCESS_TOKEN@$INTERNAL_REMOTE_PATH
-        git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH.git
+        Write-Host "Remote $INTERNAL_REMOTE already exists. Removing ..."
+        git remote remove $INTERNAL_REMOTE
       }
+    - echo "Adding remote $INTERNAL_REMOTE..."
+    - git remote add $INTERNAL_REMOTE http://$INTERNAL_ACCESS_TOKEN@$INTERNAL_REMOTE_PATH
 
-    # pull from external remote
-    - Write-Host "Pulling from the remote repository..."
-    # - git pull $EXTERNAL_REMOTE develop
-    # - git lfs fetch --all $EXTERNAL_REMOTE
-    # - git push $INTERNAL_REMOTE HEAD:refs/heads/develop
-    # - git lfs push --all $INTERNAL_REMOTE
-    # - git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH.git
-    - git lfs fetch $EXTERNAL_REMOTE --all
-    - git pull $EXTERNAL_REMOTE $CI_COMMIT_BRANCH
-    # - git remote add $INTERNAL_REMOTE http://$INTERNAL_ACCESS_TOKEN@$INTERNAL_REMOTE_PATH.git
-    - git push -u $INTERNAL_REMOTE $CI_COMMIT_BRANCH
+    - |
+      if (git remote get-url $EXTERNAL_REMOTE) {
+        Write-Host "Remote $EXTERNAL_REMOTE already exists. Removing ..." 
+        git remote remove $EXTERNAL_REMOTE
+      }
+    - Write-Host "Adding remote $EXTERNAL_REMOTE..."
+    - git remote add $EXTERNAL_REMOTE https://$EXTERNAL_ACCESS_TOKEN@$EXTERNAL_REMOTE_PATH.git
+    
+    # Pulling from the $EXTERNAL_REMOTE repository...
+    - echo "Pulling from the $EXTERNAL_REMOTE repository..."
+
+    - git fetch $EXTERNAL_REMOTE
+    - git lfs fetch --all $EXTERNAL_REMOTE
+    
+    # Pushing to $INTERNAL_REMOTE repository...
+    - echo "Pushing to $INTERNAL_REMOTE repository..."
+
+    - git push $INTERNAL_REMOTE $EXTERNAL_REMOTE/$EXTERNAL_UPSTREAM_BRANCH:refs/heads/$EXTERNAL_UPSTREAM_BRANCH
+    - git lfs push $INTERNAL_REMOTE --all
