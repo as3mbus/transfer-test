@@ -92,5 +92,5 @@ pull-external:
 
     - $sourceBranch = "$EXTERNAL_REMOTE/$EXTERNAL_UPSTREAM_BRANCH"
     - $destinationBranch = "refs/heads/$EXTERNAL_UPSTREAM_BRANCH"
-    - git push $INTERNAL_REMOTE "$sourceBranch:$destinationBranch"
+    - git push $INTERNAL_REMOTE "${sourceBranch}:$destinationBranch"
     - git lfs push $INTERNAL_REMOTE --all
